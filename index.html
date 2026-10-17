@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tripboard - Student Travel Planner</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container-xl d-flex flex-wrap align-items-baseline gap-3">
+      <h1 class="brand mb-0">Tripboard</h1>
+      <p class="mb-0 tagline">Pick a place, set your dates, see what it costs.</p>
+    </div>
+  </header>
+
+  <main class="container-xl py-4">
+    <div class="row g-4">
+
+      <!-- LEFT: destinations -->
+      <section class="col-lg-7" aria-labelledby="destHeading">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+          <h2 id="destHeading" class="h4 mb-0">Destinations</h2>
+          <div class="d-flex gap-2 flex-grow-1 flex-md-grow-0">
+            <input id="searchBox" type="search" class="form-control" placeholder="Search by name, state or type" aria-label="Search destinations">
+            <select id="tagFilter" class="form-select w-auto" aria-label="Filter by type">
+              <option value="all">All types</option>
+            </select>
+          </div>
+        </div>
+        <p id="resultCount" class="text-muted small mb-2"></p>
+        <div id="destinationList" class="row g-3"></div>
+      </section>
+
+      <!-- RIGHT: planner -->
+      <aside class="col-lg-5">
+        <div class="sticky-side">
+
+          <div class="panel">
+            <h2 class="h5 mb-3">Plan your trip</h2>
+            <form id="tripForm" novalidate>
+              <div class="mb-3">
+                <label for="tripName" class="form-label">Trip name</label>
+                <input id="tripName" class="form-control" required minlength="3" maxlength="40" placeholder="Semester break with friends">
+                <div class="invalid-feedback">Give the trip a name of at least 3 characters.</div>
+              </div>
+              <div class="mb-3">
+                <label for="destination" class="form-label">Destination</label>
+                <select id="destination" class="form-select" required>
+                  <option value="">Choose a destination</option>
+                </select>
+                <div class="invalid-feedback">Pick a destination from the list.</div>
+              </div>
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label for="startDate" class="form-label">Start date</label>
+                  <input id="startDate" type="date" class="form-control" required>
+                  <div class="invalid-feedback">Start date can't be in the past.</div>
+                </div>
+                <div class="col-6">
+                  <label for="endDate" class="form-label">End date</label>
+                  <input id="endDate" type="date" class="form-control" required>
+                  <div class="invalid-feedback" id="endFeedback">Choose an end date.</div>
+                </div>
+              </div>
+              <div class="row g-3 mb-3">
+                <div class="col-5">
+                  <label for="travelers" class="form-label">Travelers</label>
+                  <input id="travelers" type="number" class="form-control" required min="1" max="10" value="1">
+                  <div class="invalid-feedback">Enter 1 to 10 travelers.</div>
+                </div>
+                <div class="col-7">
+                  <label for="budget" class="form-label">Total budget (&#8377;)</label>
+                  <input id="budget" type="number" class="form-control" required min="1000" step="500" placeholder="25000">
+                  <div class="invalid-feedback">Budget must be at least &#8377;1,000.</div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="form-label mb-0">Planned expenses (&#8377;)</span>
+                <button type="button" id="estimateBtn" class="btn btn-sm btn-outline-secondary">Estimate for me</button>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6"><input id="expTransport" type="number" min="0" class="form-control exp" placeholder="Transport" aria-label="Transport"></div>
+                <div class="col-6"><input id="expStay" type="number" min="0" class="form-control exp" placeholder="Stay" aria-label="Stay"></div>
+                <div class="col-6"><input id="expFood" type="number" min="0" class="form-control exp" placeholder="Food" aria-label="Food"></div>
+                <div class="col-6"><input id="expActivities" type="number" min="0" class="form-control exp" placeholder="Activities" aria-label="Activities"></div>
+                <div class="col-12"><input id="expOther" type="number" min="0" class="form-control exp" placeholder="Other" aria-label="Other"></div>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-brand flex-grow-1">Save trip</button>
+                <button type="button" id="resetBtn" class="btn btn-outline-secondary">Clear</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2 class="h5 mb-3">Trip summary</h2>
+            <div id="summary"></div>
+            <div class="chart-wrap"><canvas id="expenseChart" aria-label="Expenses by category" role="img"></canvas></div>
+          </div>
+
+          <div class="panel">
+            <h2 class="h5 mb-3">Saved trips</h2>
+            <ul id="savedList" class="list-unstyled mb-0"></ul>
+          </div>
+
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="toast-area"><div id="toast" class="toast align-items-center text-bg-dark border-0" role="status"><div class="toast-body" id="toastBody"></div></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/expenseChart.js"></script>
+  <script src="js/trip.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
